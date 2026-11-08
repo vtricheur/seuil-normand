@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://seuilnormand.fr/sitemap.xml
