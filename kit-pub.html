@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Visuels pub – Seuil Normand</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+  body { margin: 0; background: #11171b; color: #e7ebe8; font: 16px/1.5 "Public Sans", system-ui, sans-serif; }
+  header { padding: 28px 20px 10px; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+  h1 { font: 400 2rem Gloock, Georgia, serif; margin: 0; }
+  p { margin: 4px 0 0; color: #a7b3b6; }
+  button { font: 700 1rem "Public Sans", sans-serif; border: 0; border-radius: 999px; padding: 12px 22px; background: #d1a46c; color: #1f2b33; cursor: pointer; }
+  button[disabled] { opacity: .5; cursor: default; }
+  .grid { max-width: 1200px; margin: 0 auto; padding: 10px 20px 60px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figure img { width: 100%; border-radius: 6px; background: #1b242a; aspect-ratio: 4/5; object-fit: cover; }
+  figure.story img { aspect-ratio: 9/16; }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; font-size: .85rem; color: #a7b3b6; align-items: center; }
+  figcaption button { padding: 6px 12px; font-size: .8rem; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Visuels pub Seuil Normand</h1><p id="status">Préparation des visuels…</p></div>
+  <button id="all" disabled>Tout télécharger (.zip)</button>
+</header>
+<div class="grid" id="grid"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(async function () {
+  var LOGO = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2e5a4c"/><path d="M20 50V27a12 12 0 0 1 24 0v23" fill="none" stroke="#fbfbf9" stroke-width="4.5" stroke-linecap="round"/><path d="M27 50V29a5 5 0 0 1 10 0v21" fill="#fbfbf9" opacity=".22"/><rect x="12" y="49" width="40" height="5" rx="2.5" fill="#d1a46c"/></svg>';
+  var U = "https://images.unsplash.com/";
+  var ADS = [
+    { n: "01-pergola-post", src: "photo-1696846912973-3233cc80bf86", h: "Votre terrasse, de mars à octobre.", sub: "Pergola bioclimatique sur mesure, lames orientables motorisées.", tag: "Pergola" },
+    { n: "02-fenetres-post", src: "photo-1774199679021-db3b421867c3", h: "Plus de lumière. Moins de chauffage.", sub: "Fenêtres et baies vitrées sur mesure. TVA à 5,5 % possible.", tag: "Fenêtres" },
+    { n: "03-garage-post", src: "photo-1775430766327-ca7d9f93f563", h: "La porte de garage qu'on remarque depuis la rue.", sub: "Sectionnelle motorisée, sur mesure, fabrication française.", tag: "Porte de garage", hs: 88 },
+    { n: "04-porte-entree-post", src: "photo-1628744448840-55bdb2497bd4", h: "Une entrée qui donne le ton.", sub: "Portes d'entrée alu, acier ou bois. Serrure 5 points.", tag: "Porte d'entrée" },
+    { n: "05-portail-post", src: "photo-1780377816572-e48c80e9e3cd", h: "Un portail à la hauteur de votre maison.", sub: "Portails alu battants ou coulissants, motorisables.", tag: "Portail", hs: 90 },
+    { n: "06-pergola-story", story: 1, src: "photo-1696846912293-9a8013e17403", h: "Votre terrasse, de mars à octobre.", sub: "Pergola bioclimatique sur mesure.", tag: "Pergola", hs: 110 },
+    { n: "07-fenetres-story", story: 1, src: "photo-1748063578185-3d68121b11ff", h: "Plus de lumière. Moins de chauffage.", sub: "Fenêtres et baies vitrées sur mesure.", tag: "Fenêtres", hs: 110 },
+    { n: "08-garage-story", story: 1, src: "photo-1770756051811-1612ac8bedfa", h: "Rentrez sans sortir de la voiture.", sub: "Porte de garage motorisée, posée chez vous.", tag: "Porte de garage", hs: 110 },
+    { n: "09-portail-story", story: 1, src: "photo-1636466248026-eed6e6777f23", h: "Un portail à la hauteur de votre maison.", sub: "Sur mesure, motorisable.", tag: "Portail", hs: 104 },
+    { n: "10-porte-entree-story", story: 1, src: "photo-1668911494256-becf9fea265b", h: "Une entrée qui donne le ton.", sub: "Portes d'entrée isolantes et sécurisées.", tag: "Porte d'entrée", hs: 110 }
+  ];
+  function loadImg(src) { return new Promise(function (res, rej) { var i = new Image(); i.crossOrigin = "anonymous"; i.onload = function () { res(i); }; i.onerror = rej; i.src = src; }); }
+  function wrap(x, t, w) { var ws = t.split(" "), ls = [], l = ""; ws.forEach(function (word) { var c = l ? l + " " + word : word; if (x.measureText(c).width > w && l) { ls.push(l); l = word; } else l = c; }); ls.push(l); return ls; }
+  async function make(s) {
+    var W = 1080, H = s.story ? 1920 : 1350, c = document.createElement("canvas"); c.width = W; c.height = H; var x = c.getContext("2d");
+    var img = await loadImg(U + s.src + "?auto=format&fit=crop&w=" + W + "&h=" + H + "&q=90"); x.drawImage(img, 0, 0, W, H);
+    var g = x.createLinearGradient(0, H * .38, 0, H); g.addColorStop(0, "rgba(15,22,27,0)"); g.addColorStop(.55, "rgba(15,22,27,.72)"); g.addColorStop(1, "rgba(15,22,27,.92)"); x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var g2 = x.createLinearGradient(0, 0, 0, 260); g2.addColorStop(0, "rgba(15,22,27,.45)"); g2.addColorStop(1, "rgba(15,22,27,0)"); x.fillStyle = g2; x.fillRect(0, 0, W, 260);
+    var lg = await loadImg("data:image/svg+xml," + encodeURIComponent(LOGO)), top = s.story ? 140 : 64;
+    x.drawImage(lg, 64, top, 76, 76); x.fillStyle = "#fff"; x.font = "400 46px Gloock"; x.textBaseline = "middle"; x.fillText("Seuil Normand", 158, top + 40);
+    x.font = "600 26px 'Public Sans'"; x.fillStyle = "rgba(255,255,255,.85)"; x.textAlign = "right"; x.fillText(s.tag.toUpperCase(), W - 64, top + 40); x.textAlign = "left";
+    var hs = s.hs || 96, bp = s.story ? 300 : 90; x.font = "400 " + hs + "px Gloock"; var lines = wrap(x, s.h, W - 128), lh = hs * 1.05;
+    x.font = "400 38px 'Public Sans'"; var sub = wrap(x, s.sub, W - 128);
+    var y = H - bp - 110 - sub.length * 52 - 30 - lines.length * lh;
+    x.fillStyle = "#fff"; x.font = "400 " + hs + "px Gloock"; x.textBaseline = "alphabetic"; lines.forEach(function (l, i) { x.fillText(l, 64, y + lh * (i + 1) - lh * .2); }); y += lines.length * lh + 30;
+    x.font = "400 38px 'Public Sans'"; x.fillStyle = "rgba(255,255,255,.9)"; sub.forEach(function (l, i) { x.fillText(l, 64, y + 52 * (i + 1) - 12); }); y += sub.length * 52 + 40;
+    x.font = "700 36px 'Public Sans'"; var cta = "Devis gratuit  →  seuilnormand.fr", cw = x.measureText(cta).width + 80;
+    x.fillStyle = "#d1a46c"; x.beginPath(); x.roundRect ? x.roundRect(64, y, cw, 84, 42) : x.rect(64, y, cw, 84); x.fill(); x.fillStyle = "#1f2b33"; x.textBaseline = "middle"; x.fillText(cta, 104, y + 43);
+    return new Promise(function (r) { c.toBlob(r, "image/jpeg", .9); });
+  }
+  function save(blob, name) { var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+  await document.fonts.load("400 80px Gloock"); await document.fonts.load("600 40px 'Public Sans'"); await document.fonts.load("700 40px 'Public Sans'"); await document.fonts.load("400 40px 'Public Sans'");
+  var blobs = {}, grid = document.getElementById("grid"), status = document.getElementById("status");
+  for (var i = 0; i < ADS.length; i++) {
+    var s = ADS[i];
+    try {
+      var b = await make(s); blobs[s.n] = b;
+      var f = document.createElement("figure"); if (s.story) f.className = "story";
+      f.innerHTML = '<img alt=""><figcaption><span>' + s.n + (s.story ? " · story 9:16" : " · post 4:5") + '</span><button>Télécharger</button></figcaption>';
+      f.querySelector("img").src = URL.createObjectURL(b);
+      (function (n, bl) { f.querySelector("button").onclick = function () { save(bl, "seuil-normand-" + n + ".jpg"); }; })(s.n, b);
+      grid.appendChild(f); status.textContent = (i + 1) + " / " + ADS.length + " visuels prêts";
+    } catch (e) { status.textContent = "Un visuel n'a pas pu être créé (" + s.n + "). Rechargez la page."; }
+  }
+  var all = document.getElementById("all"); all.disabled = false;
+  all.onclick = async function () {
+    all.disabled = true; all.textContent = "Création du zip…";
+    var z = new JSZip(); Object.keys(blobs).forEach(function (n) { z.file("seuil-normand-" + n + ".jpg", blobs[n]); });
+    save(await z.generateAsync({ type: "blob" }), "seuil-normand-visuels-pub.zip");
+    all.disabled = false; all.textContent = "Tout télécharger (.zip)";
+  };
+})();
+</script>
+</body>
+</html>
