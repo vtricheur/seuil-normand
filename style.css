@@ -201,6 +201,11 @@ details p { margin-top: .5rem; color: var(--slate-2); }
   .page-photo img { aspect-ratio: 4 / 3; }
 }
 
+.card-cta { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--green); border-radius: 4px; padding: 1.2rem; display: grid; gap: .6rem; margin-top: 1rem; }
+.sources { font-size: .85rem; }
+.prose h2 { font-size: var(--s2); margin-top: .8rem; }
+article.prose table { margin-block: .4rem; }
+
 /* Pied */
 footer { background: var(--slate); color: var(--stone); padding-block: 2.5rem; font-size: .9rem; }
 footer .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1.5rem; }
