@@ -5,7 +5,7 @@
   var names=(new URLSearchParams(location.search).get('f')||'').split(',').filter(Boolean);
   var out=[];
   for (var i=0;i<names.length;i++){var r=await fetch(names[i]);out.push({name:names[i],type:r.headers.get('content-type')||'image/png',buf:await r.arrayBuffer()});}
-  if(window.opener){window.opener.postMessage({snkit:out},'https://www.facebook.com',out.map(function(o){return o.buf}));document.getElementById('s').textContent='Images envoyées. Vous pouvez fermer cet onglet.';setTimeout(function(){window.close()},800);}
+  var T=window.opener||(window.parent!==window?window.parent:null);if(T){T.postMessage({snkit:out},'https://www.facebook.com',out.map(function(o){return o.buf}));document.getElementById('s').textContent='Images envoyées. Vous pouvez fermer cet onglet.';setTimeout(function(){window.close()},800);}
   else document.getElementById('s').textContent='Ouvrez cette page depuis Facebook.';
 })();
 </script>
