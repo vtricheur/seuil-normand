@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /kit-pub.html
+Disallow: /kit/
 Sitemap: https://seuilnormand.fr/sitemap.xml
