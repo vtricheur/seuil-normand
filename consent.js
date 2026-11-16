@@ -4,8 +4,8 @@
 (function () {
   "use strict";
   var CFG = {
-    GADS_ID: "",            // ex. "AW-123456789" (balise Google Ads)
-    GADS_LABEL: "",         // libellé de l'action de conversion « Demande de devis »
+    GADS_ID: "AW-18579177641",   // balise Google Ads (compte 752-054-0837)
+    GADS_LABEL: "QDoJCKbn27kdEKmBn5tF",  // conversion « Envoi de formulaire de lead »
     META_PIXEL: "1113394131504095"
   };
   var KEY = "sn-consent", MAX = 182 * 864e5;
