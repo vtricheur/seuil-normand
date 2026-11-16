@@ -49,7 +49,7 @@
       btn.disabled = true; btn.textContent = "Envoi…";
       fetch(DEST, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-        .then(function () { form.reset(); ok("Demande reçue. Nous vous rappelons sous 48 h ouvrées pour préciser votre projet et préparer le devis."); })
+        .then(function () { try { if (window.snConversion) window.snConversion(data["Produits"]); } catch (e) {} form.reset(); ok("Demande reçue. Nous vous rappelons sous 48 h ouvrées pour préciser votre projet et préparer le devis."); })
         .catch(function () { fail("L'envoi n'a pas abouti. Vérifiez votre connexion et réessayez, ou appelez le 06 37 99 00 92."); })
         .finally(function () { btn.disabled = false; btn.textContent = "Recevoir mon devis gratuit"; });
     });

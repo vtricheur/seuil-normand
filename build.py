@@ -164,7 +164,7 @@ def head(title, desc, path, artifact=False):
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' + meta + '</head>\n<body>\n')
 
 def tail(artifact=False):
-    s = '<script src="cp.js"></script>\n<script src="site.js"></script>\n'
+    s = '<script src="cp.js"></script>\n<script src="consent.js"></script>\n<script src="site.js"></script>\n'
     return s if artifact else s + '</body>\n</html>\n'
 
 def topbar():
@@ -188,7 +188,7 @@ def footer():
             f'<p class="small social"><a href="{FACEBOOK}" rel="me noopener" target="_blank">Facebook</a> · <a href="{INSTAGRAM}" rel="me noopener" target="_blank">Instagram @seuilnormand</a></p></div>'
             f'<div><h3>Produits</h3><ul>{prods}</ul></div>'
             f'<div><h3>Secteur</h3><ul>{cities}</ul></div>'
-            f'<div><h3>Informations</h3><ul><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="confidentialite.html">Données personnelles</a></li><li><a href="fonctionnement.html">Fonctionnement du service</a></li><li><a href="conseils.html">Conseils et prix</a></li></ul></div>'
+            f'<div><h3>Informations</h3><ul><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="confidentialite.html">Données personnelles</a></li><li><a href="#" data-cookies>Gérer les cookies</a></li><li><a href="fonctionnement.html">Fonctionnement du service</a></li><li><a href="conseils.html">Conseils et prix</a></li></ul></div>'
             f'</div></footer>\n')
 
 def form(prefill=None, heading="Votre devis gratuit", place=""):
@@ -442,7 +442,7 @@ def page_text(slug, title, body):
     return (head(title + " | Seuil Normand", title + " du site Seuil Normand.", slug + ".html") + topbar() +
             f'<main><div class="wrap legal"><p class="crumbs"><a href="index.html">Accueil</a> › {e(title)}</p><h1>{e(title)}</h1>{body}</div></main>' + footer() + tail())
 
-MENTIONS = f'''<p class="hint">Dernière mise à jour : 7 novembre 2026</p>
+MENTIONS = f'''<p class="hint">Dernière mise à jour : 16 novembre 2026</p>
 <h2>Éditeur du site</h2>
 <p>Seuil Normand est un nom commercial exploité par {LEGAL["name"]}, entrepreneur individuel (micro-entreprise).<br>
 SIRET : <span class="mono">{LEGAL["siret"]}</span><br>
@@ -457,13 +457,14 @@ Directeur de la publication : {LEGAL["name"]}</p>
 <h2>Propriété intellectuelle</h2>
 <p>Les textes et illustrations de ce site appartiennent à leur auteur. Toute reproduction sans autorisation est interdite.</p>'''
 
-CONFID = f'''<p class="hint">Dernière mise à jour : 7 novembre 2026</p>
+CONFID = f'''<p class="hint">Dernière mise à jour : 16 novembre 2026</p>
 <h2>Ce que nous collectons</h2><p>Lorsque vous remplissez le formulaire : vos nom, téléphone, email, code postal, commune et la description de votre projet.</p>
 <h2>Pourquoi</h2><p>Uniquement pour traiter votre demande de devis : vous rappeler, préciser votre projet et le transmettre au professionnel partenaire qui établit le devis. Base légale : votre consentement, que vous donnez en cochant la case du formulaire.</p>
 <h2>Qui y a accès</h2><ul style="padding-left:1.2rem;display:grid;gap:.3rem"><li>Seuil Normand ({LEGAL["name"]}).</li><li>Le négoce-menuisier partenaire qui établit votre devis.</li><li>Nos prestataires techniques : FormSubmit (transmission du formulaire par email) et Google (messagerie). Certains sont situés aux États-Unis ; les transferts reposent sur les garanties prévues par le RGPD, comme le Data Privacy Framework ou les clauses contractuelles types.</li></ul>
 <h2>Combien de temps</h2><p>12 mois après notre dernier échange sur votre projet, puis vos données sont supprimées.</p>
 <h2>Vos droits</h2><p>Vous pouvez accéder à vos données, les faire corriger ou supprimer, vous opposer à leur traitement et retirer votre consentement à tout moment en écrivant à {LEGAL["email"]}. Réponse sous un mois. En cas de désaccord, vous pouvez saisir la CNIL (cnil.fr).</p>
-<h2>Cookies</h2><p>Ce site ne dépose aucun cookie publicitaire ni de mesure d'audience.</p>'''
+<h2 id="cookies">Cookies</h2><p>Sans votre accord, ce site ne dépose aucun cookie. Si vous cliquez sur « Accepter » dans le bandeau, deux outils de mesure publicitaire sont chargés : la balise Google Ads (Google Ireland Ltd) et le pixel Meta (Meta Platforms Ireland Ltd). Ils servent uniquement à savoir si une demande de devis provient d'une publicité, pour mesurer l'efficacité de nos annonces. Votre choix est conservé 6 mois.</p>
+<p>Vous pouvez changer d'avis à tout moment : <a href="#" data-cookies>gérer les cookies</a>. Refuser n'a aucune conséquence sur l'utilisation du site ni sur votre demande de devis.</p>'''
 
 FONCT = '''<h2>Ce que fait Seuil Normand</h2><p>Seuil Normand est un service gratuit qui recueille vos demandes de devis de menuiseries et fermetures (fenêtres, volets, portes, portails, pergolas) et les transmet à un négoce-menuisier partenaire installé dans l'Eure.</p>
 <h2>Comment Seuil Normand est rémunéré</h2><p>Le service est gratuit pour vous. Seuil Normand peut être rémunéré par le professionnel partenaire lorsqu'un projet est signé. Cette rémunération n'est jamais ajoutée à votre devis par Seuil Normand.</p>
@@ -478,6 +479,7 @@ def build():
         shutil.rmtree(fp) if os.path.isdir(fp) else os.remove(fp)
     shutil.copy(os.path.join(SRC, "style.css"), OUT)
     shutil.copy(os.path.join(SRC, "site.js"), OUT)
+    shutil.copy(os.path.join(SRC, "consent.js"), OUT)
     for f in ["kit-pub.html", "favicon.svg", "favicon.png", "favicon.ico", "apple-touch-icon.png", "og-image.png", "CNAME", ".nojekyll"]:
         if os.path.exists(os.path.join(SRC, f)): shutil.copy(os.path.join(SRC, f), OUT)
     if os.path.isdir(os.path.join(SRC, "kit")): shutil.copytree(os.path.join(SRC, "kit"), os.path.join(OUT, "kit"))

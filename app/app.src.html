@@ -328,6 +328,7 @@ label.f { display: grid; gap: 4px; font-size: .8rem; font-weight: 600; color: va
     if (!mcp || !db || state.syncing) { if (manual && !mcp) toast("Gmail n'est pas disponible dans cette vue"); return; }
     state.syncing = true; render();
     var known = {}; state.demandes.forEach(function (d) { if (d.threadId) known[d.threadId] = 1; });
+    Object.keys(state.tri).forEach(function (k) { if (state.tri[k] === "ignoree") known[k] = 1; });
     var added = 0;
     mcp.callTool("Gmail", "search_threads", { query: GMAIL_QUERY, pageSize: 50 }, { cache: false }).then(function (r) {
       var threads = (r.payload && r.payload.threads) || [];
@@ -689,14 +690,15 @@ label.f { display: grid; gap: 4px; font-size: .8rem; font-weight: 600; color: va
   use("db").then(function (d) {
     if (!d) { state.dbOk = false; render(); return; }
     db = d; state.dbOk = true;
-    db.collection("tri").onSnapshot(function (s) { var o = {}; s.docs.forEach(function (x) { var v = x.data() || {}; if (v.etat) o[x.id] = v.etat; }); state.tri = o; render(); }, function () {});
+    db.collection("tri").onSnapshot(function (s) { var o = {}; s.docs.forEach(function (x) { var v = x.data() || {}; if (v.etat) o[x.id] = v.etat; }); state.tri = o; var f = !state.triLoaded; state.triLoaded = true; render(); if (f) maybeSync(); }, function () { state.triLoaded = true; maybeSync(); });
     db.doc("config/reglages").onSnapshot(function (s) { var v = s.data(); if (v) { state.settings = Object.assign({}, state.settings, v); render(); } }, function () {});
     col().orderBy("createdAt", "desc").onSnapshot(function (s) {
       state.demandes = s.docs.map(function (x) { var v = Object.assign({ _id: x.id }, x.data()); if (!ST[v.statut]) v.statut = "nouvelle"; return v; });
       var first = !state.loaded; state.loaded = true; render();
-      if (first && mcp) syncGmail(false);
+      if (first) maybeSync();
     }, function (err) { state.dbOk = false; state.loaded = true; render(); });
   });
-  use("mcp").then(function (m) { mcp = m; if (m && state.loaded) syncGmail(false); if (m) loadMail("sn"); });
+  function maybeSync() { if (mcp && state.loaded && state.triLoaded && !state.synced) { state.synced = true; syncGmail(false); } }
+  use("mcp").then(function (m) { mcp = m; maybeSync(); if (m) loadMail("sn"); });
 })();
 </script>
