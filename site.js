@@ -26,7 +26,8 @@
       var cp = cpInput.value.trim();
       var z = zoneInfo(cp) || { km: null, label: "code postal non reconnu" };
       var data = {
-        _subject: "Nouvelle demande Seuil Normand – " + products.join(", ") + " – " + cp,
+        /* objet unique (nom + heure) : Gmail ne regroupe pas deux demandes dans la même conversation */
+        _subject: "Nouvelle demande Seuil Normand – " + products.join(", ") + " – " + cp + " – " + (form.nom.value || "").trim().slice(0, 40) + " – " + new Date().toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }),
         _template: "table",
         _captcha: "false",
         "Produits": products.join(", "),
