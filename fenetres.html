@@ -37,32 +37,41 @@
   <p>Décrivez votre projet dans l'Eure et autour. Nous vous rappelons sous 48 h ouvrées pour le préciser, puis vous recevez un devis chiffré.</p>
   <ul><li>Fabrication française, sur mesure</li><li>Conseils d'un négoce-menuisier normand établi depuis 50 ans</li><li>Vous restez libre de ne pas donner suite</li></ul>
 </div>
-<form class="devis" novalidate>
+<form class="devis" novalidate data-step="1">
+  <div class="step1">
+  <p class="stepline"><span class="st">Étape 1/2</span> · 30 secondes, on vous rappelle</p>
   <fieldset><legend>Que souhaitez-vous ?</legend><div class="chips"><label><input type="checkbox" name="produits" value="Fenêtres" id="p-fenetres" checked> Fenêtres</label><label><input type="checkbox" name="produits" value="Volets" id="p-volets"> Volets</label><label><input type="checkbox" name="produits" value="Porte d&#x27;entrée" id="p-porte-entree"> Porte d&#x27;entrée</label><label><input type="checkbox" name="produits" value="Porte de garage" id="p-porte-garage"> Porte de garage</label><label><input type="checkbox" name="produits" value="Portail" id="p-portail"> Portail</label><label><input type="checkbox" name="produits" value="Pergola" id="p-pergola"> Pergola</label><label><input type="checkbox" name="produits" value="Portes intérieures" id="p-portes-interieures"> Portes intérieures</label></div></fieldset>
+  <div class="row2">
+    <div class="field"><label for="code_postal">Code postal du chantier</label><input type="text" id="code_postal" name="code_postal" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required autocomplete="postal-code" placeholder="27800"></div>
+    <div class="field"><label for="nom">Prénom et nom</label><input type="text" id="nom" name="nom" required autocomplete="name"></div>
+  </div>
+  <div class="field"><label for="telephone">Téléphone</label><input type="tel" id="telephone" name="telephone" required autocomplete="tel" inputmode="tel" pattern="[0-9 +.]{10,}" placeholder="06 12 34 56 78"></div>
+  <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+  <button class="btn" type="submit">Être rappelé gratuitement</button>
+  <p class="consent">Vos coordonnées servent uniquement à préparer votre devis avec notre partenaire menuisier. <a href="confidentialite.html">En savoir plus</a></p>
+  </div>
+  <div class="step2" hidden>
+  <p class="form-msg ok">Demande reçue ! Nous vous rappelons sous 48 h ouvrées.</p>
+  <p class="stepline"><span class="st">Étape 2/2, facultative</span> · quelques précisions pour un devis plus juste</p>
   <div class="row2">
     <div class="field"><label for="projet">Type de projet</label><select id="projet" name="projet"><option>Rénovation</option><option>Construction neuve</option><option>Je ne sais pas encore</option></select></div>
     <div class="field"><label for="pose">Pose</label><select id="pose" name="pose"><option>Fourniture et pose</option><option>Fourniture seule</option><option>À voir ensemble</option></select></div>
   </div>
   <div class="row2">
-    <div class="field"><label for="code_postal">Code postal du chantier</label><input type="text" id="code_postal" name="code_postal" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required autocomplete="postal-code" placeholder="27800"></div>
     <div class="field"><label for="commune">Commune</label><input type="text" id="commune" name="commune" autocomplete="address-level2" placeholder="Brionne"></div>
+    <div class="field"><label for="delai">Quand ?</label><select id="delai" name="delai"><option>Dès que possible</option><option>Dans les 3 mois</option><option>Dans 3 à 6 mois</option><option>Plus tard / je me renseigne</option></select></div>
   </div>
-  <div class="field"><label for="details">Votre projet <span class="hint">nombre, dimensions approximatives, matériau souhaité</span></label><textarea id="details" name="details" placeholder="Ex. : 4 fenêtres PVC blanc, environ 100 × 120 cm, et une porte-fenêtre 140 × 215 cm"></textarea></div>
-  <div class="field"><label for="delai">Quand souhaitez-vous réaliser les travaux ?</label><select id="delai" name="delai"><option>Dès que possible</option><option>Dans les 3 mois</option><option>Dans 3 à 6 mois</option><option>Plus tard / je me renseigne</option></select></div>
-  <div class="row2">
-    <div class="field"><label for="nom">Nom</label><input type="text" id="nom" name="nom" required autocomplete="name"></div>
-    <div class="field"><label for="telephone">Téléphone</label><input type="tel" id="telephone" name="telephone" required autocomplete="tel" pattern="[0-9 +.]{10,}"></div>
+  <div class="field"><label for="details">Votre projet <span class="hint">nombre, dimensions approximatives, matériau</span></label><textarea id="details" name="details" placeholder="Ex. : 4 fenêtres PVC blanc, environ 100 × 120 cm"></textarea></div>
+  <div class="field"><label for="email">Email <span class="hint">pour recevoir le devis par écrit</span></label><input type="email" id="email" name="email" autocomplete="email"></div>
+  <div class="hero-cta"><button class="btn" type="submit">Envoyer ces précisions</button><button class="btn ghost skip" type="button">Non merci</button></div>
   </div>
-  <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required autocomplete="email"></div>
-  <input type="text" name="_honey" id="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-  <label class="consent" for="consent"><input type="checkbox" id="consent" name="consent" required> J'accepte que mes coordonnées soient transmises au professionnel partenaire pour l'établissement de mon devis. <a href="confidentialite.html">En savoir plus</a></label>
-  <button class="btn" type="submit">Recevoir mon devis gratuit</button>
   <p class="form-msg" hidden role="status"></p>
 </form>
 </div></section>
 
 </main>
 <footer><div class="wrap"><div><h3>Seuil Normand</h3><p class="small">Service gratuit de demande de devis pour vos menuiseries et fermetures, en lien avec un négoce-menuisier installé dans l'Eure depuis 50 ans.</p><p class="small" style="margin-top:.6rem">Tél. <span class="mono">06 37 99 00 92</span></p><p class="small social"><a href="https://www.facebook.com/profile.php?id=61596127125985" rel="me noopener" target="_blank">Facebook</a> · <a href="https://www.instagram.com/seuilnormand/" rel="me noopener" target="_blank">Instagram @seuilnormand</a></p></div><div><h3>Produits</h3><ul><li><a href="fenetres.html">Fenêtres et baies vitrées</a></li><li><a href="volets.html">Volets roulants et battants</a></li><li><a href="porte-entree.html">Portes d&#x27;entrée</a></li><li><a href="porte-garage.html">Portes de garage</a></li><li><a href="portail.html">Portails et clôtures</a></li><li><a href="pergola.html">Pergolas bioclimatiques</a></li><li><a href="portes-interieures.html">Portes intérieures</a></li></ul></div><div><h3>Secteur</h3><ul><li><a href="evreux.html">Menuiserie à Évreux</a></li><li><a href="rouen.html">Menuiserie à Rouen</a></li><li><a href="louviers.html">Menuiserie à Louviers</a></li><li><a href="elbeuf.html">Menuiserie à Elbeuf</a></li><li><a href="bernay.html">Menuiserie à Bernay</a></li><li><a href="le-neubourg.html">Menuiserie au Neubourg</a></li><li><a href="brionne.html">Menuiserie à Brionne</a></li><li><a href="pont-audemer.html">Menuiserie à Pont-Audemer</a></li><li><a href="val-de-reuil.html">Menuiserie à Val-de-Reuil</a></li><li><a href="conches-en-ouche.html">Menuiserie à Conches-en-Ouche</a></li><li><a href="lisieux.html">Menuiserie à Lisieux</a></li><li><a href="vernon.html">Menuiserie à Vernon</a></li><li><a href="bourg-achard.html">Menuiserie à Bourg-Achard</a></li><li><a href="gaillon.html">Menuiserie à Gaillon</a></li></ul></div><div><h3>Informations</h3><ul><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="confidentialite.html">Données personnelles</a></li><li><a href="#" data-cookies>Gérer les cookies</a></li><li><a href="fonctionnement.html">Fonctionnement du service</a></li><li><a href="conseils.html">Conseils et prix</a></li></ul></div></div></footer>
+<div class="callbar"><a class="call" href="tel:+33637990092">Appeler</a><a class="quote-link" href="#devis">Devis gratuit</a></div>
 <script src="cp.js"></script>
 <script src="consent.js"></script>
 <script src="site.js"></script>
