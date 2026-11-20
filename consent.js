@@ -6,7 +6,8 @@
   var CFG = {
     GADS_ID: "AW-18579177641",   // balise Google Ads (compte 752-054-0837)
     GADS_LABEL: "QDoJCKbn27kdEKmBn5tF",  // conversion « Envoi de formulaire de lead »
-    META_PIXEL: "1113394131504095"
+    META_PIXEL: "1113394131504095",
+    CLARITY: "zgl6tikrxy"         // Microsoft Clarity (projet Seuil Normand)
   };
   var KEY = "sn-consent", MAX = 182 * 864e5;
   function read() {
@@ -22,6 +23,10 @@
       var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + CFG.GADS_ID; document.head.appendChild(s);
       window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
       gtag("js", new Date()); gtag("config", CFG.GADS_ID);
+    }
+    if (CFG.CLARITY) {
+      (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", CFG.CLARITY);
+      window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
     }
     if (CFG.META_PIXEL) {
       !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
@@ -46,7 +51,7 @@
     if (document.getElementById("cc")) return;
     var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
     var d = document.createElement("div"); d.className = "cc"; d.id = "cc"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Cookies");
-    d.innerHTML = '<div class="in"><p>Avec votre accord, nous utilisons des cookies de Google et Meta pour mesurer l\'efficacité de nos publicités. Aucun cookie n\'est déposé si vous refusez, et le site fonctionne de la même façon. <a href="confidentialite.html#cookies">En savoir plus</a></p>' +
+    d.innerHTML = '<div class="in"><p>Avec votre accord, nous utilisons des cookies de Google, Meta et Microsoft Clarity pour mesurer l\'efficacité de nos publicités et améliorer le site. Aucun cookie n\'est déposé si vous refusez, et le site fonctionne de la même façon. <a href="confidentialite.html#cookies">En savoir plus</a></p>' +
       '<div class="b"><button type="button" class="n" data-cc="no">Refuser</button><button type="button" class="y" data-cc="ok">Accepter</button></div></div>';
     document.body.appendChild(d);
     d.addEventListener("click", function (e) {
