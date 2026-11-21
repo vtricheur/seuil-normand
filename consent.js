@@ -8,7 +8,7 @@
     GADS_LABEL: "QDoJCKbn27kdEKmBn5tF",  // conversion « Envoi de formulaire de lead »
     META_PIXEL: "1113394131504095",
     CLARITY: "zgl6tikrxy",        // Microsoft Clarity (projet Seuil Normand)
-    GOATCOUNTER: ""               // compteur de visites SANS cookies (exempté de consentement) : code du compte GoatCounter
+    GOATCOUNTER: "seuilnormand"             // compteur de visites SANS cookies (exempté de consentement) : code du compte GoatCounter
   };
   /* Compteur sans cookies : chargé pour tout le monde, il ne dépose rien sur l'appareil et ne suit personne d'un site à l'autre */
   window.snTrack = function (name, title) { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "evt-" + name, title: title || name, event: true }); } catch (e) {} };
