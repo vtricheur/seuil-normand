@@ -28,6 +28,8 @@
       msg.hidden = false; msg.className = "form-msg ok"; msg.textContent = t || "Merci, nous vous rappelons sous 48 h ouvrées pour préparer votre devis.";
     }
     form.querySelector(".skip").addEventListener("click", function () { done(); });
+    var more = form.querySelector(".chip-more");
+    if (more) more.addEventListener("click", function () { form.classList.add("show-all"); });
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -57,6 +59,7 @@
         var next = function () {
           first = data; s1.hidden = true; s2.hidden = false;
           try { if (window.snConversion) window.snConversion(data["Produits"]); } catch (err) {}
+          if (window.snTrack) window.snTrack("demande-envoyee", "Demande envoyée (étape 1)");
           s2.scrollIntoView({ behavior: "smooth", block: "start" });
         };
         if (!live) { first = data; s1.hidden = true; s2.hidden = false; return; }
@@ -84,6 +87,13 @@
 
     function fail(t) { msg.hidden = false; msg.className = "form-msg err"; msg.textContent = t; }
   });
+
+  /* Compteur sans cookies : le formulaire a-t-il été vu ? a-t-on cliqué sur Appeler ? */
+  (function () {
+    var f = document.querySelector("form.devis"); var seen = false;
+    if (f && "IntersectionObserver" in window) new IntersectionObserver(function (en, o) { en.forEach(function (x) { if (x.isIntersecting && !seen) { seen = true; o.disconnect(); setTimeout(function () { window.snTrack && window.snTrack("formulaire-vu", "Formulaire vu"); }, 1500); } }); }, { threshold: .4 }).observe(f);
+    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest('a[href^="tel:"]'); if (a && window.snTrack) window.snTrack("clic-appeler", "Clic sur Appeler"); });
+  })();
 
   document.querySelectorAll("[data-goto]").forEach(function (el) {
     function go() { location.href = el.getAttribute("data-goto"); }
