@@ -286,3 +286,20 @@ form.devis.compact.show-all .chip-more { display: none; }
   .phero-form { order: 6; }
   .phero-photo { order: 7; }
 }
+
+/* Estimateur de prix */
+.est-sec { padding-block: 1.5rem .5rem; }
+.est { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 1rem 2rem; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--green); border-radius: 4px; padding: clamp(1rem, 3vw, 1.6rem); scroll-margin-top: 1rem; }
+.est-head { grid-column: 1 / -1; display: grid; gap: .2rem; }
+.est-head h2 { margin: 0; text-wrap: balance; }
+.est-head .eyebrow { margin: 0; }
+.est-body { display: grid; gap: .8rem; min-width: 0; }
+.est-q { border: 0; padding: 0; margin: 0; display: grid; gap: .35rem; min-width: 0; }
+.est-q legend { font-weight: 600; font-size: .9rem; padding: 0; margin-bottom: .35rem; }
+.est-out { display: grid; gap: .5rem; align-content: start; background: var(--stone); border: 1px solid var(--line); border-radius: 4px; padding: 1rem; }
+.est-lab { margin: 0; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--slate-2); }
+.est-val { margin: 0; font-size: 1.05rem; }
+.est-val b { font-size: 1.6rem; color: var(--green); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.est-note { margin: 0; font-size: .8rem; color: var(--slate-2); }
+.est-go { justify-self: start; }
+@media (max-width: 820px) { .est { grid-template-columns: minmax(0, 1fr); } }

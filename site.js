@@ -55,6 +55,7 @@
           "Téléphone": form.telephone.value.trim(),
           "Page d'origine": document.title
         };
+        if (form.estimation && form.estimation.value) data["Estimation en ligne"] = form.estimation.value;
         var btn = s1.querySelector("button[type=submit]");
         var next = function () {
           first = data; s1.hidden = true; s2.hidden = false;
@@ -86,6 +87,31 @@
     });
 
     function fail(t) { msg.hidden = false; msg.className = "form-msg err"; msg.textContent = t; }
+  });
+
+
+  /* Estimateur de prix : fourchette indicative, reprise dans la demande */
+  document.querySelectorAll(".est").forEach(function (box) {
+    var touched = false;
+    function eur(n) { return (Math.round(n / 100) * 100).toLocaleString("fr-FR") + " €"; }
+    function calc() {
+      var mid = 0, mult = 1, add = 0, parts = [];
+      box.querySelectorAll(".est-q").forEach(function (q, i) {
+        var r = q.querySelector("input:checked"); if (!r) return;
+        var v = parseFloat(r.value); parts.push(q.querySelector("legend").textContent + " : " + r.getAttribute("data-label"));
+        if (i === 0) mid = v; else if (v >= 10 || v === 0) add += v; else mult *= v;
+      });
+      var c = mid * mult + add, lo = eur(c * 0.82), hi = eur(c * 1.18);
+      box.querySelector(".est-min").textContent = lo; box.querySelector(".est-max").textContent = hi;
+      var txt = lo + " à " + hi + " (" + parts.join(", ") + ")";
+      document.querySelectorAll("form.devis [name=estimation]").forEach(function (h) { h.value = touched ? txt : ""; });
+    }
+    box.addEventListener("change", function () {
+      if (!touched && window.snTrack) window.snTrack("estimateur-utilise", "Estimateur utilisé");
+      touched = true; calc();
+    });
+    box.querySelector(".est-go").addEventListener("click", function () { touched = true; calc(); });
+    calc();
   });
 
   /* Compteur sans cookies : le formulaire a-t-il été vu ? a-t-on cliqué sur Appeler ? */
